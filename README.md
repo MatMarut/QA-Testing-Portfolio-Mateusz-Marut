@@ -43,4 +43,3 @@ PostmanCollection
 Autor
 
 Mateusz Marut
-Junior QA Tester
