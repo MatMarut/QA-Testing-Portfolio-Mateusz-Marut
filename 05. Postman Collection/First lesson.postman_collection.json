@@ -1,0 +1,290 @@
+{
+  "info": {
+    "_postman_id": "b1ddbd26-77d9-45b9-81e5-aa39b4ee38c1",
+    "name": "First lesson",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "29621006"
+  },
+  "item": [
+    {
+      "name": "Get request petstore",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Response status code is 200\", function () {\r",
+              "    pm.expect(pm.response.code).to.equal(200);\r",
+              "});\r",
+              "\r",
+              "\r",
+              "pm.test(\"Response time is less than 200ms\", function () {\r",
+              "    pm.expect(pm.response.responseTime).to.be.below(200);\r",
+              "});\r",
+              "\r",
+              "\r",
+              "pm.test(\"Response has the required fields\", function () {\r",
+              "    const responseData = pm.response.json();\r",
+              "    \r",
+              "    pm.expect(responseData).to.be.an('object');\r",
+              "    pm.expect(responseData).to.have.all.keys('id', 'category', 'name', 'photoUrls', 'tags', 'status');\r",
+              "    \r",
+              "    pm.expect(responseData.category).to.be.an('object').that.includes.keys('id', 'name');\r",
+              "    pm.expect(responseData.photoUrls).to.be.an('array');\r",
+              "    pm.expect(responseData.tags).to.be.an('array');\r",
+              "});\r",
+              "\r",
+              "\r",
+              "pm.test(\"Response schema is valid\", function () {\r",
+              "    const responseData = pm.response.json();\r",
+              "    \r",
+              "    pm.expect(responseData).to.be.an('object');\r",
+              "    pm.expect(responseData).to.have.all.keys('id', 'category', 'name', 'photoUrls', 'tags', 'status');\r",
+              "\r",
+              "    pm.expect(responseData.category).to.be.an('object').that.has.all.keys('id', 'name');\r",
+              "    pm.expect(responseData.photoUrls).to.be.an('array');\r",
+              "    pm.expect(responseData.tags).to.be.an('array');\r",
+              "\r",
+              "    responseData.tags.forEach(tag => {\r",
+              "        pm.expect(tag).to.be.an('object').that.has.all.keys('id', 'name');\r",
+              "    });\r",
+              "});\r",
+              "\r",
+              "\r",
+              "pm.test(\"Category name must be a non-empty string\", function () {\r",
+              "    const responseData = pm.response.json();\r",
+              "    \r",
+              "    pm.expect(responseData).to.be.an('object');\r",
+              "    pm.expect(responseData.category).to.exist;\r",
+              "    pm.expect(responseData.category.name).to.exist.and.to.be.a('string').and.to.have.lengthOf.at.least(1, \"Category name should not be empty\");\r",
+              "});\r",
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{petstore}}/pet/56",
+          "host": [
+            "{{petstore}}"
+          ],
+          "path": [
+            "pet",
+            "56"
+          ],
+          "query": [
+            {
+              "key": "status",
+              "value": "unavailable",
+              "type": "text",
+              "disabled": true
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Post petstore",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "pm.test(\"Response time under 200ms\", function() {\r",
+              "    pm.expect(pm.response.responseTime).to.be.below(200)\r",
+              "});\r",
+              "pm.test(\"Response has valid scheme\", function() {\r",
+              "    const response = pm.response.json();\r",
+              "\r",
+              "    pm.expect(response).to.be.an('object');\r",
+              "    pm.expect(response).to.have.all.keys('id', 'category', 'name', 'photoUrls', 'tags', 'status');\r",
+              "\r",
+              "    pm.expect(response.category).to.be.an('object');\r",
+              "    pm.expect(response.category).to.have.all.keys('id', 'name');\r",
+              "    pm.expect(response.tags).to.be.an('array');\r",
+              "});\r",
+              "pm.test(\"Status has the correct value\", function() {\r",
+              "\r",
+              "    pm.expect(pm.response.json()).to.be.an('object');\r",
+              "    pm.expect(pm.response.json().status).to.be.a('string');\r",
+              "    pm.expect(pm.response.json().status).to.be.oneOf(['available', 'unavailable', 'pending', 'sold']);\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"id\": 56,\r\n  \"category\": {\r\n    \"id\": 1,\r\n    \"name\": \"Bubba\"\r\n  },\r\n  \"name\": \"Bubba\",\r\n  \"photoUrls\": [\r\n    \"string\"\r\n  ],\r\n  \"tags\": [\r\n    {\r\n      \"id\": 0,\r\n      \"name\": \"Bubba\"\r\n    }\r\n  ],\r\n  \"status\": \"pending\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{petstore}}/pet",
+          "host": [
+            "{{petstore}}"
+          ],
+          "path": [
+            "pet"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Delete petstore",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function(){\r",
+              "    pm.expect(pm.response.code).to.eql(200);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Response time is less than 200ms\", function () {\r",
+              "    pm.expect(pm.response.responseTime).to.be.below(200);\r",
+              "});\r",
+              "pm.test(\"Response body contains the correct message\", function () {\r",
+              "    pm.expect(pm.response.text()).to.include(\"56\");\r",
+              "});\r",
+              "pm.test(\"Response body contains the correct code\", function () {\r",
+              "    pm.expect(pm.response.json().code).to.equal(200);\r",
+              "});\r",
+              "pm.test(\"Response body contains the correct type\", function () {\r",
+              "    pm.expect(pm.response.json().type).to.equal(\"unknown\");\r",
+              "});\r",
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{petstore}}/pet/56",
+          "host": [
+            "{{petstore}}"
+          ],
+          "path": [
+            "pet",
+            "56"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Put petstore",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function(){\r",
+              "    pm.expect(pm.response.code).to.eql(200);\r",
+              "});\r",
+              "pm.test(\"Status was changed to sold\", function (){\r",
+              "    const json = pm.response.json();\r",
+              "\r",
+              "    pm.expect(json.status).to.eql('sold');\r",
+              "});\r",
+              "pm.test(\"Pet name is Bubba\", function (){\r",
+              "    const json = pm.response.json();\r",
+              "\r",
+              "    pm.expect(json.name).to.eql('Bubba');\r",
+              "});\r",
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"id\": 56,\r\n  \"category\": {\r\n    \"id\": 1,\r\n    \"name\": \"Bubba\"\r\n  },\r\n  \"name\": \"Bubba\",\r\n  \"photoUrls\": [\r\n    \"string\"\r\n  ],\r\n  \"tags\": [\r\n    {\r\n      \"id\": 0,\r\n      \"name\": \"Bubba\"\r\n    }\r\n  ],\r\n  \"status\": \"sold\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{petstore}}/pet",
+          "host": [
+            "{{petstore}}"
+          ],
+          "path": [
+            "pet"
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "petstore",
+      "value": "https://petstore.swagger.io/v2/"
+    }
+  ]
+}
